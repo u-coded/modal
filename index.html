@@ -13,25 +13,25 @@
   <main>
     <h1>モーダル</h1>
 
-    <button data-modal-open="modal1">モーダル1</button>
-    <button data-modal-open="modal2">モーダル2</button>
+    <button type="button" data-modal-open="modal1">1つ目のモーダルを開く</button>
+    <button type="button" data-modal-open="modal2">2つ目のモーダルを開く</button>
 
     <dialog id="modal1" class="modal" data-modal role="dialog" aria-labelledby="modal1-title" aria-describedby="modal1-desc" aria-hidden="true" autofocus>
       <div class="modal-container" data-modal-container>
-        <button class="modal-btn" type="button" data-modal-close>モーダルを閉じる</button>
         <div class="modal-inner">
-          <h2 id="modal1-title">モーダル1のタイトル</h2>
-          <p id="modal1-desc">モーダル1の中身</p>
+          <h2 id="modal1-title">1つ目のモーダルのタイトル</h2>
+          <p id="modal1-desc">1つ目のモーダルの中身</p>
+          <button class="modal-btn" type="button" data-modal-close>モーダルを閉じる</button>
         </div>
       </div>
     </dialog>
 
     <dialog id="modal2" class="modal" data-modal role="dialog" aria-labelledby="modal2-title" aria-describedby="modal2-desc" aria-hidden="true" autofocus>
       <div class="modal-container" data-modal-container>
-        <button class="modal-btn" type="button" data-modal-close>モーダルを閉じる</button>
         <div class="modal-inner">
-          <h2 id="modal2-title">モーダル2のタイトル</h2>
-          <p id="modal2-desc">モーダル2の中身</p>
+          <h2 id="modal2-title">2つ目のモーダルのタイトル</h2>
+          <p id="modal2-desc">2つ目のモーダルの中身</p>
+          <button class="modal-btn" type="button" data-modal-close>モーダルを閉じる</button>
         </div>
       </div>
     </dialog>

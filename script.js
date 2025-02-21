@@ -68,11 +68,6 @@ function openModal(modalId) {
 
   requestAnimationFrame(() => {
     modal.classList.remove(OPEN_CLASS); // 開いた後にOPEN_CLASSを削除
-    // モーダル内の最初のフォーカス可能な要素にフォーカスを移動
-    // const firstFocusableElement = modal.querySelector(
-    //   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    // );
-    // firstFocusableElement?.focus();
   });
 }
 
