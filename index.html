@@ -12,15 +12,22 @@
 <body>
   <main>
     <h1>モーダル</h1>
+    <p>モーダル内の「前へ」「次へ」ボタンで、モーダルを切り替えられるようにしました。<br>1〜3と4〜6をそれぞれグループ化し、各グループ内でループする仕様になっています。</p>
 
     <button type="button" data-modal-open="modal1">1つ目のモーダルを開く</button>
     <button type="button" data-modal-open="modal2">2つ目のモーダルを開く</button>
+    <button type="button" data-modal-open="modal3">3つ目のモーダルを開く</button>
+    <button type="button" data-modal-open="modal4">4つ目のモーダルを開く</button>
+    <button type="button" data-modal-open="modal5">5つ目のモーダルを開く</button>
+    <button type="button" data-modal-open="modal6">6つ目のモーダルを開く</button>
 
     <dialog id="modal1" class="modal" data-modal aria-labelledby="modal1-title" aria-describedby="modal1-desc" aria-hidden="true" autofocus>
       <div class="modal-container" data-modal-container>
         <div class="modal-inner">
           <h2 id="modal1-title">1つ目のモーダルのタイトル</h2>
           <p id="modal1-desc">1つ目のモーダルの中身</p>
+          <button type="button" data-modal-prev="modal3">前のモーダルへ</button>
+          <button type="button" data-modal-next="modal2">次のモーダルへ</button>
           <button type="button" data-modal-close>モーダルを閉じる</button>
         </div>
       </div>
@@ -31,10 +38,61 @@
         <div class="modal-inner">
           <h2 id="modal2-title">2つ目のモーダルのタイトル</h2>
           <p id="modal2-desc">2つ目のモーダルの中身</p>
+          <button type="button" data-modal-prev="modal1">前のモーダルへ</button>
+          <button type="button" data-modal-next="modal3">次のモーダルへ</button>
           <button type="button" data-modal-close>モーダルを閉じる</button>
         </div>
       </div>
     </dialog>
+
+    <dialog id="modal3" class="modal" data-modal aria-labelledby="modal3-title" aria-describedby="modal3-desc" aria-hidden="true" autofocus>
+      <div class="modal-container" data-modal-container>
+        <div class="modal-inner">
+          <h2 id="modal3-title">3つ目のモーダルのタイトル</h2>
+          <p id="modal3-desc">3つ目のモーダルの中身</p>
+          <button type="button" data-modal-prev="modal2">前のモーダルへ</button>
+          <button type="button" data-modal-next="modal1">次のモーダルへ</button>
+          <button type="button" data-modal-close>モーダルを閉じる</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="modal4" class="modal" data-modal aria-labelledby="modal4-title" aria-describedby="modal4-desc" aria-hidden="true" autofocus>
+      <div class="modal-container" data-modal-container>
+        <div class="modal-inner">
+          <h2 id="modal4-title">4つ目のモーダルのタイトル</h2>
+          <p id="modal4-desc">4つ目のモーダルの中身</p>
+          <button type="button" data-modal-prev="modal6">前のモーダルへ</button>
+          <button type="button" data-modal-next="modal5">次のモーダルへ</button>
+          <button type="button" data-modal-close>モーダルを閉じる</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="modal5" class="modal" data-modal aria-labelledby="modal5-title" aria-describedby="modal5-desc" aria-hidden="true" autofocus>
+      <div class="modal-container" data-modal-container>
+        <div class="modal-inner">
+          <h2 id="modal5-title">5つ目のモーダルのタイトル</h2>
+          <p id="modal5-desc">5つ目のモーダルの中身</p>
+          <button type="button" data-modal-prev="modal4">前のモーダルへ</button>
+          <button type="button" data-modal-next="modal6">次のモーダルへ</button>
+          <button type="button" data-modal-close>モーダルを閉じる</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="modal6" class="modal" data-modal aria-labelledby="modal6-title" aria-describedby="modal6-desc" aria-hidden="true" autofocus>
+      <div class="modal-container" data-modal-container>
+        <div class="modal-inner">
+          <h2 id="modal6-title">6つ目のモーダルのタイトル</h2>
+          <p id="modal6-desc">6つ目のモーダルの中身</p>
+          <button type="button" data-modal-prev="modal5">前のモーダルへ</button>
+          <button type="button" data-modal-next="modal4">次のモーダルへ</button>
+          <button type="button" data-modal-close>モーダルを閉じる</button>
+        </div>
+      </div>
+    </dialog>
+
   </main>
 </body>
 

@@ -3,7 +3,8 @@ const MODAL_SEL = "[data-modal]"; // モーダル要素を示すセレクター
 const OPEN_SEL = "[data-modal-open]"; // モーダルを開くボタンのセレクター
 const CONTAINER_SEL = "[data-modal-container]"; // モーダルのコンテンツを囲むコンテナのセレクター
 const CLOSE_SEL = "[data-modal-close]"; // モーダルを閉じるボタンのセレクター
-
+const PREV_SEL = "[data-modal-prev]"; // 前のモーダルに切り替えるボタンのセレクター
+const NEXT_SEL = "[data-modal-next]"; // 次のモーダルに切り替えるボタンのセレクター
 const OPEN_CLASS = "is-open"; // モーダルが開かれているときに付与するクラス
 const CLOSE_CLASS = "is-close"; // モーダルが閉じられるときに付与するクラス
 
@@ -12,6 +13,8 @@ const body = document.body;
 const modals = document.querySelectorAll(MODAL_SEL);
 const openTriggers = document.querySelectorAll(OPEN_SEL);
 const closeTriggers = document.querySelectorAll(CLOSE_SEL);
+const prevTriggers = document.querySelectorAll(PREV_SEL);
+const nextTriggers = document.querySelectorAll(NEXT_SEL);
 
 // 各モーダルを開くボタンにクリックイベントを設定
 openTriggers.forEach((openTrigger) => {
@@ -26,6 +29,24 @@ closeTriggers.forEach((closeTrigger) => {
   closeTrigger.addEventListener("click", () => {
     const modalId = closeTrigger.closest(MODAL_SEL).id; // 閉じるボタンの親要素からモーダルIDを取得
     closeModal(modalId); // モーダルを閉じる関数を呼び出し
+  });
+});
+
+// 前のモーダルを開くボタンの設定
+prevTriggers.forEach((prevTrigger) => {
+  prevTrigger.addEventListener("click", () => {
+    const currentModal = prevTrigger.closest(MODAL_SEL);
+    const prevModalId = prevTrigger.dataset.modalPrev;
+    switchModal(currentModal.id, prevModalId);
+  });
+});
+
+// 次のモーダルを開くボタンの設定
+nextTriggers.forEach((nextTrigger) => {
+  nextTrigger.addEventListener("click", () => {
+    const currentModal = nextTrigger.closest(MODAL_SEL);
+    const nextModalId = nextTrigger.dataset.modalNext;
+    switchModal(currentModal.id, nextModalId);
   });
 });
 
@@ -91,11 +112,15 @@ function closeModal(modalId) {
       body.removeAttribute("inert");
 
       // 元の開くトリガーにフォーカスを戻す
-      const openTrigger = document.querySelector(
-        `[data-modal-open="${modalId}"]`
-      );
+      const openTrigger = document.querySelector(`[data-modal-open="${modalId}"]`);
       openTrigger?.focus();
     },
     { once: true } // 一度だけ実行するリスナー
   );
+}
+
+// モーダルを切り替える関数
+function switchModal(currentModalId, nextModalId) {
+  closeModal(currentModalId);
+  openModal(nextModalId);
 }
