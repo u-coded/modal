@@ -9,9 +9,9 @@ const CLOSE_CLASS = "is-close"; // モーダルが閉じられるときに付与
 
 // DOM内の全てのモーダル、開閉トリガーを取得
 const body = document.body;
-const modals = document.querySelectorAll(`${MODAL_SEL}`);
-const openTriggers = document.querySelectorAll(`${OPEN_SEL}`);
-const closeTriggers = document.querySelectorAll(`${CLOSE_SEL}`);
+const modals = document.querySelectorAll(MODAL_SEL);
+const openTriggers = document.querySelectorAll(OPEN_SEL);
+const closeTriggers = document.querySelectorAll(CLOSE_SEL);
 
 // 各モーダルを開くボタンにクリックイベントを設定
 openTriggers.forEach((openTrigger) => {
