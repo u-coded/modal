@@ -1,12 +1,12 @@
 // モーダルに関連するセレクターとクラス名を定義
-const MODAL_SEL = "[data-modal]"; // モーダル要素を示すセレクター
-const OPEN_SEL = "[data-modal-open]"; // モーダルを開くボタンのセレクター
-const CONTAINER_SEL = "[data-modal-container]"; // モーダルのコンテンツを囲むコンテナのセレクター
-const CLOSE_SEL = "[data-modal-close]"; // モーダルを閉じるボタンのセレクター
-const PREV_SEL = "[data-modal-prev]"; // 前のモーダルに切り替えるボタンのセレクター
-const NEXT_SEL = "[data-modal-next]"; // 次のモーダルに切り替えるボタンのセレクター
-const OPEN_CLASS = "is-open"; // モーダルが開かれているときに付与するクラス
-const CLOSE_CLASS = "is-close"; // モーダルが閉じられるときに付与するクラス
+const MODAL_SEL = "[data-modal]";
+const OPEN_SEL = "[data-modal-open]";
+const CONTAINER_SEL = "[data-modal-container]";
+const CLOSE_SEL = "[data-modal-close]";
+const PREV_SEL = "[data-modal-prev]";
+const NEXT_SEL = "[data-modal-next]";
+const OPEN_CLASS = "is-open";
+const CLOSE_CLASS = "is-close";
 
 // DOM内の全てのモーダル、開閉トリガーを取得
 const body = document.body;
@@ -19,16 +19,16 @@ const nextTriggers = document.querySelectorAll(NEXT_SEL);
 // 各モーダルを開くボタンにクリックイベントを設定
 openTriggers.forEach((openTrigger) => {
   openTrigger.addEventListener("click", () => {
-    const modalId = openTrigger.dataset.modalOpen; // data-modal-open属性からモーダルIDを取得
-    openModal(modalId); // モーダルを開く関数を呼び出し
+    const modalId = openTrigger.dataset.modalOpen;
+    openModal(modalId);
   });
 });
 
 // 各モーダルを閉じるボタンにクリックイベントを設定
 closeTriggers.forEach((closeTrigger) => {
   closeTrigger.addEventListener("click", () => {
-    const modalId = closeTrigger.closest(MODAL_SEL).id; // 閉じるボタンの親要素からモーダルIDを取得
-    closeModal(modalId); // モーダルを閉じる関数を呼び出し
+    const modalId = closeTrigger.closest(MODAL_SEL).id;
+    closeModal(modalId);
   });
 });
 
@@ -64,63 +64,109 @@ modals.forEach((modal) => {
     const modalId = modal.id;
     // Escapeキーが押された場合にモーダルを閉じる
     if (e.key === "Escape") {
-      e.preventDefault(); // デフォルトの動作を防ぐ
+      e.preventDefault();
       closeModal(modalId);
     }
   });
 });
 
 // モーダルを開く関数
-function openModal(modalId) {
-  const modal = document.getElementById(modalId); // モーダルIDに基づいてモーダル要素を取得
+function openModal(modalId, preserveScrollPosition = false) {
+  const modal = document.getElementById(modalId);
+
+  // スクロール位置を保持する場合は、既存のスクロール位置を使用
+  let scrollY;
+  if (preserveScrollPosition && body.dataset.scrollY) {
+    scrollY = parseInt(body.dataset.scrollY, 10);
+  } else {
+    // 現在のスクロール位置を保存
+    scrollY = window.scrollY;
+    body.dataset.scrollY = scrollY.toString();
+  }
+
+  body.style.position = "fixed";
+  body.style.top = `-${scrollY}px`;
+  body.style.width = "100%";
 
   // モーダルを開く前に body を inert に設定
   body.setAttribute("inert", "");
 
-  modal.classList.add(OPEN_CLASS); // モーダルを開くクラスを追加
-  modal.setAttribute("aria-hidden", "false"); // アクセシビリティ用にaria-hidden属性をfalseに設定
-  modal.showModal(); // ネイティブのshowModal()でモーダルを表示
+  modal.classList.add(OPEN_CLASS);
+  modal.setAttribute("aria-hidden", "false");
+  modal.showModal();
 
   // モーダル自体を inert の影響から除外
   modal.removeAttribute("inert");
 
-  body.style.overflow = "hidden";
-  body.style.height = "100vh";
-
   requestAnimationFrame(() => {
-    modal.classList.remove(OPEN_CLASS); // 開いた後にOPEN_CLASSを削除
+    modal.classList.remove(OPEN_CLASS);
   });
 }
 
 // モーダルを閉じる関数
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId); // モーダルIDに基づいてモーダル要素を取得
-  modal.classList.add(CLOSE_CLASS); // モーダルを閉じるクラスを追加
-  modal.setAttribute("aria-hidden", "true"); // アクセシビリティ用にaria-hidden属性をtrueに設定
+function closeModal(modalId, keepScrollPosition = false) {
+  const modal = document.getElementById(modalId);
 
-  body.style.overflow = "";
-  body.style.height = "";
+  // aria-hiddenを設定する前にフォーカスを外す
+  if (document.activeElement && modal.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
+
+  modal.classList.add(CLOSE_CLASS);
+  modal.setAttribute("aria-hidden", "true");
 
   // アニメーション終了時にモーダルを閉じる処理を実行
   modal.addEventListener(
     "transitionend",
     () => {
-      modal.classList.remove(CLOSE_CLASS); // 閉じるクラスを削除
-      modal.close(); // ネイティブのclose()でモーダルを閉じる
+      modal.classList.remove(CLOSE_CLASS);
+      modal.close();
 
-      // モーダルを閉じた後、body を再操作可能に
-      body.removeAttribute("inert");
+      // スクロール位置を保持する場合は、position: fixedを維持
+      if (!keepScrollPosition) {
+        // モーダルを閉じた後、body を再操作可能に
+        body.removeAttribute("inert");
 
-      // 元の開くトリガーにフォーカスを戻す
-      const openTrigger = document.querySelector(`[data-modal-open="${modalId}"]`);
-      openTrigger?.focus();
+        // position: fixedを解除してスクロール位置を復元
+        const scrollY = body.dataset.scrollY || "0";
+        body.style.position = "";
+        body.style.top = "";
+        body.style.width = "";
+        delete body.dataset.scrollY;
+        window.scrollTo(0, parseInt(scrollY, 10));
+
+        // 元の開くトリガーにフォーカスを戻す
+        const openTrigger = document.querySelector(`[data-modal-open="${modalId}"]`);
+        openTrigger?.focus();
+      }
     },
-    { once: true } // 一度だけ実行するリスナー
+    { once: true }
   );
 }
 
 // モーダルを切り替える関数
 function switchModal(currentModalId, nextModalId) {
-  closeModal(currentModalId);
-  openModal(nextModalId);
+  // スクロール位置を保持したままモーダルを切り替える
+  const currentModal = document.getElementById(currentModalId);
+
+  // aria-hiddenを設定する前にフォーカスを外す
+  if (document.activeElement && currentModal.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
+
+  currentModal.classList.add(CLOSE_CLASS);
+  currentModal.setAttribute("aria-hidden", "true");
+
+  // アニメーション終了時に次のモーダルを開く
+  currentModal.addEventListener(
+    "transitionend",
+    () => {
+      currentModal.classList.remove(CLOSE_CLASS);
+      currentModal.close();
+
+      // スクロール位置を保持したまま次のモーダルを開く
+      openModal(nextModalId, true);
+    },
+    { once: true }
+  );
 }

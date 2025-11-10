@@ -5,6 +5,9 @@ dialog::backdrop {
 .modal {
   position: relative;
   transition: opacity 0.3s;
+  outline: none;
+  border: none;
+  background: transparent;
 }
 
 .modal::backdrop {
@@ -22,13 +25,11 @@ dialog::backdrop {
 }
 
 .modal-container {
+  position: fixed;
+  inset: 0;
   width: min(calc(100% - 100px), 800px);
   height: fit-content;
-  inset: 0;
   margin: auto;
-  position: fixed;
-  top: 0;
-  left: 0;
   background: white;
 }
 
